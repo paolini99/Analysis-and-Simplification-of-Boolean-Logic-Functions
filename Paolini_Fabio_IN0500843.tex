@@ -1,0 +1,945 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{karnaugh-map}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage[bottom,norule]{footmisc}
+\usepackage{makecell}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[italian]{babel}
+\setcellgapes{1.5pt}
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc}
+\tikzstyle{branch}=[fill,shape=circle,minimum size=3pt,inner sep=0pt]
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+\newcommand*{\oline}[1]{\overline{#1\mathstrut}}
+\newcommand{\bigspace}{\quad\quad\quad\quad}
+\begin{document}
+\author{Fabio Paolini\\ IN0500843}
+\title{Progetto - Fondamenti di informatica}
+\date{Anno 2019-2020}
+\maketitle
+\section{Calcolo della funzione}
+\begin{textblock*}{10pt}(100pt,420pt)
+\begin{gather*}
+(500843 \mod \quad 65536) = 42091\\
+42091_{10} = 1010010001101011_2
+\end{gather*}
+\end{textblock*}
+\begin{textblock*}{10pt}(240pt,437pt)
+\Huge{$\rightarrow$}
+\end{textblock*}
+\begin{textblock*}{10pt}(300pt,330pt)
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{x} & \textbf{y} & \textbf{z} & \textbf{d} & \textbf{f(x,y,z,d)} \\
+\hline
+0 & 0 & 0 & 0 & 1 \\
+\hline
+0 & 0 & 0 & 1 & 0 \\
+\hline
+0 & 0 & 1 & 0 & 1 \\
+\hline
+0 & 0 & 1 & 1 & 0 \\
+\hline
+0 & 1 & 0 & 0 & 0 \\
+\hline
+0 & 1 & 0 & 1 & 1 \\
+\hline
+0 & 1 & 1 & 0 & 0 \\
+\hline
+0 & 1 & 1 & 1 & 0 \\
+\hline
+1 & 0 & 0 & 0 & 0 \\
+\hline
+1 & 0 & 0 & 1 & 1 \\
+\hline
+1 & 0 & 1 & 0 & 1 \\
+\hline
+1 & 0 & 1 & 1 & 0 \\
+\hline
+1 & 1 & 0 & 0 & 1 \\
+\hline
+1 & 1 & 0 & 1 & 0 \\
+\hline
+1 & 1 & 1 & 0 & 1 \\
+\hline
+1 & 1 & 1 & 1 & 1 \\
+\hline
+\end{tabular}
+\end{textblock*}
+Ricavo i valori assunti dalla funzione $f(x,y,z,d)$ dal resto della divisione del numero di matricola ($0500843$) per $2^{16}$:\\
+\bigspace
+\newpage
+\subsection*{Minterm}
+Per ottenere la prima forma canonica della funzione, riscrivo le combinazioni $(x,y,z,d)$ in cui la funzione assume il valore $1$:\\
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{x} & \textbf{y} & \textbf{z} & \textbf{d} & \textbf{f(x,y,z,d)} \\
+		\hline
+		0 & 0 & 0 & 0 & 1 \\
+		\hline
+		0 & 0 & 1 & 0 & 1 \\
+		\hline
+		0 & 1 & 0 & 1 & 1 \\
+		\hline
+		1 & 0 & 0 & 1 & 1 \\
+		\hline
+		1 & 0 & 1 & 0 & 1 \\
+		\hline
+		1 & 1 & 0 & 0 & 1 \\
+		\hline
+		1 & 1 & 1 & 0 & 1 \\
+		\hline
+		1 & 1 & 1 & 1 & 1 \\
+		\hline
+	\end{tabular}
+\end{center}
+La funzione $f(x,y,z,d)$ si può esprimere come somma di prodotti nel seguente modo:
+\begin{align*}
+\bm{f(x,y,z,d)} = (\oline{x} \cdot \oline{y} \cdot \oline{z} \cdot \oline{d}) + (\oline{x} \cdot \oline{y}\cdot z \cdot \oline{d})
++ (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + \\
++ (x \cdot \oline{y} \cdot z \cdot \oline{d}) + (x \cdot y \cdot \oline{z} \cdot \oline{d}) + (x \cdot y \cdot z \cdot \oline{d}) + 
+(x \cdot y \cdot z \cdot d)
+\end{align*}
+
+\subsection*{Maxterm}
+Per ottenere la seconda forma canonica della funzione, riscrivo le combinazioni $(x,y,z,d)$ in cui la funzione assume valore $0$:
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{x} & \textbf{y} & \textbf{z} & \textbf{d} & \textbf{f(x,y,z,d)} \\
+		\hline
+		0 & 0 & 0 & 1 & 0 \\
+		\hline
+		0 & 0 & 1 & 1 & 0 \\
+		\hline
+		0 & 1 & 0 & 0 & 0 \\
+		\hline
+		0 & 1 & 1 & 0 & 0 \\
+		\hline
+		0 & 1 & 1 & 1 & 0 \\
+		\hline
+		1 & 0 & 0 & 0 & 0 \\
+		\hline
+		1 & 0 & 1 & 1 & 0 \\
+		\hline
+		1 & 1 & 0 & 1 & 0 \\
+		\hline
+	\end{tabular}
+\end{center}
+La funzione $f(x,y,z,d)$ si può esprimere come prodotto di somme nel seguente modo:
+\begin{align*}
+\bm{f(x,y,z,d)} = (x+y+z+\oline{d}) \cdot (x+y+\oline{z}+\oline{d}) \cdot (x+\oline{y}+z+d) \cdot (x+\oline{y}+\oline{z}+d) \cdot \\ \cdot (x+\oline{y}+\oline{z}+\oline{d}) \cdot (\oline{x}+y+z+d) \cdot (\oline{x}+y+\oline{z}+\oline{d}) \cdot (\oline{x}+\oline{y}+z+\oline{d})
+\end{align*}
+\newpage
+\section{Semplificazione}
+\subsection*{Semplificazione algebrica}
+Semplifico le funzioni utilizzando i teoremi e gli assiomi dell' algebra booleana
+\bigspace
+\subsubsection*{Minterm}
+\bigspace
+\begin{align*}
+% line 1
+\bm{f(x,y,z,d)} &= \underline{(\oline{x} \cdot \oline{y} \cdot \oline{z} \cdot \oline{d})} +  \underline{(\oline{x} \cdot \oline{y} \cdot z \cdot \oline{d})} + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot z \cdot \oline{d}) + (x \cdot y \cdot \oline{z} \cdot \oline{d}) + \\
+&\bigspace + (x \cdot y \cdot z \cdot \oline{d}) + (x \cdot y \cdot z \cdot d)\\
+% line 2
+&\overset{T9}{=} \bm{(\oline{x} \cdot \oline{y} \cdot \oline{d})} + (\oline{x} \cdot y \cdot \oline{z} \cdot d) +(x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot z \cdot \oline{d}) + (x \cdot y \cdot \oline{z} \cdot  \oline{d}) + \underline{(x \cdot y \cdot z \cdot \oline{d})}\\
+&\bigspace + \underline{(x \cdot y \cdot z \cdot d)}\\
+% line 3
+&\overset{T9}{=} (\oline{x} \cdot \oline{y} \cdot \oline{d}) + \bm{\underline{(x \cdot y \cdot z )}} + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot z \cdot \oline{d}) + \underline{(x \cdot y \cdot \oline{z} \cdot \oline{d})} \\
+% line 5
+&\ {=} \  (\oline{x} \cdot \oline{y} \cdot \oline{d}) + \bm{(x \cdot y)} \bm\cdot \bm{\underline{(z + \oline{z} \cdot \oline{d})}} + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) +  (x \cdot \oline{y} \cdot z \cdot \oline{d})\\
+% line 6
+&\overset{T5}{=}  \underline{(\oline{x} \cdot \oline{y} \cdot \oline{d})} + {(x \cdot y)} \cdot \bm{(z +  \oline{d})} + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) +  \underline{(x \cdot \oline{y} \cdot z \cdot \oline{d})}\\
+% line 7
+&\ {=} \ \bm{{(\oline{y} \cdot \oline{d})}} \cdot \bm{\underline{(\oline{x} +  x \cdot z)}} +(x \cdot y \cdot z) + (x \cdot y \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d)\\
+% line 7
+&\overset{T5}{=} \underline{{(\oline{y} \cdot \oline{d})}} \cdot \bm{\underline{(\oline{x} +  z)} } + (x \cdot y \cdot z) + (x \cdot y \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) \\
+% line 7
+&\ {=} \ (\oline{x} \cdot \oline{y} \cdot \oline{d}) +(\oline{y} \cdot z \cdot \oline{d})+ (x \cdot y \cdot z) + (x \cdot y \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) \\
+% line 8
+&\scalebox{0.7}{Sono state omesse le operazioni che sfruttano l'assioma $A6$}\
+\end{align*}
+	\subsubsection*{Maxterm}
+\begin{align*}
+% line 1
+\bm{f(x,y,z,d)} &= \underline{(x+y+z+\oline{d}}) \cdot  \underline{(x+y+\oline{z}+\oline{d})} \cdot (x+\oline{y}+z+d) \cdot (x+\oline{y}+\oline{z}+d) \cdot (x+\oline{y}+\oline{z}+ \oline{d}) \cdot \\
+&\bigspace \cdot (\oline{x}+y+z+d) \cdot (\oline{x}+y+\oline{z}+\oline{d}) \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 2
+&\overset{T9}{=} \bm{(x+y+\oline{d})} \cdot \underline{(x+\oline{y}+z+d)} \cdot \underline{(x+\oline{y}+\oline{z}+d)} \cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot (\oline{x}+y+z+d) \\
+&\bigspace  \cdot (\oline{x}+y+\oline{z}+\oline{d}) \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 3
+&\overset{T9}{=} \underline{(x+y+\oline{d})} \cdot \bm{\underline{(x+\oline{y}+d)}}\cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot (\oline{x}+y+z+d) \cdot (\oline{x}+y+\oline{z}+\oline{d}) \\
+&\bigspace   \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 4
+&{=} [x + (x \cdot y) + \underline{(y \cdot \oline{y})} + (y \cdot d)+ (x \cdot \oline{d}) + (\oline{y} \cdot \oline{d}) + \underline{(\oline{d} \cdot d) ]} \cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot (\oline{x}+y+z+d)  \\
+&\bigspace  \cdot (\oline{x}+y+\oline{z}+\oline{d})  \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 5
+&\overset{A7}{=} [\underline{x} + \underline{(x \cdot y)} +  (y \cdot d)+ \underline{(x \cdot \oline{d}}) + (\oline{y} \cdot \oline{d})] \cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot (\oline{x}+y+z+d)  \\
+&\bigspace  \cdot (\oline{x}+y+\oline{z}+\oline{d})  \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 6
+&\overset{T4}{=}[\bm{x} +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot \underline{(\oline{x}+y+z+d)} \cdot \underline{(\oline{x}+y+\oline{z}+\oline{d})}  \\
+&\bigspace   \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 7
+&{=} [x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot (x+\oline{y}+\oline{z}+\oline{d})\cdot [\oline{x}+y+\underline{(z \cdot \oline{z})}+(z \cdot \oline{d})+ (d \cdot \oline{z})  + \underline{(d \cdot \oline{d})}] \cdot \\
+&\bigspace   \cdot (\oline{x}+\oline{y}+z+\oline{d})\\
+% line 8
+&\overset{A7}{=}[x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot \underline{(x+\oline{y}+\oline{z}+\oline{d})}\cdot [\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]  \cdot \underline{(\oline{x}+\oline{y}+z+\oline{d})}\\
+% line 9
+&{=} [x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot [\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]  \cdot [\underline{(x \cdot \oline{x})}+(x \cdot \oline{y})+(x  \cdot z)+ (x \cdot \oline{d}) + \\ 
+&\bigspace +(\oline{x} \cdot \oline{y})+(\oline{y} \cdot \oline{y})+(\oline{y} \cdot z) + (\oline{y} \cdot \oline{d})+(\oline{z} \cdot \oline{x})+(\oline{z} \cdot \oline{y})+ \underline{(\oline{z} \cdot z)} + (\oline{z} \cdot \oline{d}) +(\oline{d} \cdot \oline{x}) \\
+&\bigspace (\oline{d} \cdot \oline{y}) + (\oline{d} \cdot z) + (\oline{d} \cdot \oline{d})]\\
+% line 10
+&\overset{A7}{=} [x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot [\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]  \cdot [(x \cdot \oline{y})+(x  \cdot z)+ (x \cdot \oline{d}) + (\oline{x} \cdot \oline{y})+ \\
+&\bigspace +\underline{(\oline{y} \cdot \oline{y})}+(\oline{y} \cdot z) + (\oline{y} \cdot \oline{d})+(\oline{z} \cdot \oline{x})+(\oline{z} \cdot \oline{y})+ (\oline{z} \cdot \oline{d}) +(\oline{d} \cdot \oline{x}) + (\oline{d} \cdot \oline{y})  + (\oline{d} \cdot z) +\\
+&\bigspace + \underline{(\oline{d} \cdot \oline{d})}] \\
+% line 11
+&\overset{T1}{=}  [ x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot [\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]  \cdot [\underline{(x \cdot \oline{y})}+(x  \cdot z)+ (x \cdot \oline{d}) + \underline{(\oline{x} \cdot \oline{y})}+ \\
+&\bigspace +\bm{\underline{\oline{y}}}+\underline{(\oline{y} \cdot z)} + \underline{(\oline{y} \cdot \oline{d})}+(\oline{z} \cdot \oline{x})+\underline{(\oline{z} \cdot \oline{y})}+ (\oline{z} \cdot \oline{d}) +(\oline{d} \cdot \oline{x}) + (\oline{d} \cdot \oline{y})  + (\oline{d} \cdot z) + \bm{\oline{d} }] \\
+% line 12
+&\overset{T4}{=}  [x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})] \cdot [\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]  \cdot [(x  \cdot z)+ \underline{(x \cdot \oline{d})} + \bm{\oline{y}} +(\oline{z} \cdot \oline{x})+ \underline{(\oline{z} \cdot \oline{d})} + \\
+&\bigspace +\underline{(\oline{d} \cdot \oline{x})} + \underline{(\oline{d} \cdot \oline{y})}  + \underline{(\oline{d} \cdot z)} + \underline{\oline{d}} ] \\
+% line 13
+&\overset{T4}{=}  \underline{[x +  (y \cdot d)+  (\oline{y} \cdot \oline{d})]} \cdot \underline{[\oline{x}+y+(z \cdot \oline{d})+ (\oline{z} \cdot d)]}  \cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \bm{\oline{d}} ] \\
+% line 14
+&{=} [ \underline{(x \cdot \oline{x})} + (x \cdot y)+  (x \cdot z \cdot \oline{d}) + (x \cdot \oline{z} \cdot d) +  (\oline{y} \cdot \oline{d} \cdot \oline{x}) +\underline{(\oline{y} \cdot \oline{d} \cdot y)} +   (\oline{y} \cdot \oline{d} \cdot z \cdot \oline{d}) + \underline{(\oline{y} \cdot \oline{d} \cdot \oline{z} \cdot d )} + \\
+&\bigspace + (y \cdot d \cdot \oline{x}) + (y \cdot d \cdot y) +  \underline{(y \cdot d \cdot z \cdot \oline{d})} +(y \cdot d \cdot \oline{z} \cdot d) ] \cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \oline{d} ] \\
+\end{align*}
+\newpage
+\begin{align*}
+\bm{f(x,y,z,k)} &= ...\\
+% line 15
+&\overset{A7}{=} [  (x \cdot y)+  (x \cdot z \cdot \oline{d}) + (x \cdot \oline{z} \cdot d) +  (\oline{y} \cdot \oline{d} \cdot \oline{x}) + \underline{(\oline{y} \cdot \oline{d} \cdot z \cdot \oline{d})} +  (y \cdot d \cdot \oline{x}) + \underline{(y \cdot d \cdot y)} + \\
+&\bigspace +\underline{(y \cdot d \cdot \oline{z} \cdot d)} ] \cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \oline{d} ] \\
+% line 16
+&\overset{T1}{=} [  (x \cdot y)+  (x \cdot z \cdot \oline{d}) + (x \cdot \oline{z} \cdot d) +  (\oline{y} \cdot \oline{d} \cdot \oline{x}) + \bm{(\oline{y} \cdot z \cdot \oline{d})} +   \underline{(y \cdot d \cdot \oline{x})} + \bm{\underline{(y \cdot d )}} + \\
+&\bigspace +\bm{ \underline{(y \cdot \oline{z} \cdot d)}} ] \cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \oline{d} ] \\
+% line 17
+&\overset{T4}{=}  [  \underline{(x \cdot y)}+  \underline{(x \cdot z \cdot \oline{d})} + (x \cdot \oline{z} \cdot d) +  \underline{(\oline{y} \cdot \oline{d} \cdot \oline{x})} + (\oline{y} \cdot z \cdot \oline{d}) +  \bm{(y \cdot d )}]\cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \oline{d} ] \\
+% line 18
+&\overset{T6}{=}   [  \bm{(x \cdot y)}+ (x \cdot \oline{z} \cdot d) +  \bm{(\oline{x} \cdot \oline{y} \cdot \oline{d})} + (\oline{y} \cdot z \cdot \oline{d}) + (y \cdot d )]\cdot [(x  \cdot z) + \oline{y} +(\oline{z} \cdot \oline{x})  + \oline{d} ] \\
+% line 19
+&{=}   [ (\oline{x} \cdot \oline{y} \cdot \oline{d})+ (x  \cdot y) +  (\oline{y} \cdot z \cdot \oline{d}) + (x \cdot \oline{z} \cdot d) + (y \cdot d )]\cdot [\oline{y} + (x  \cdot z)  +(\oline{x} \cdot \oline{z})  + \oline{d} ] \\
+% line 20
+&{=} [(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{y} ) + \underline{(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot x \cdot z )} + (\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{x}  \cdot \oline{z} ) + (\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{d} ) + \underline{(x \cdot y \cdot \oline{y})} + (x \cdot y \cdot x \cdot z ) +  \\
+&\bigspace + \underline{(x \cdot y \cdot \oline{x} \cdot \oline{z} )} + (x \cdot y \cdot \oline{d}) + (\oline{y} \cdot z \cdot \oline{d} \cdot \oline{y} ) + (\oline{y} \cdot z \cdot \oline{d} \cdot x \cdot z) + \underline{(\oline{y} \cdot z \cdot \oline{d} \cdot \oline{x} \cdot \oline{z} )} +\\
+&\bigspace + (\oline{y} \cdot z \cdot \oline{d} \cdot \oline{d} ) + (x \cdot \oline{z} \cdot d \cdot \oline{y}) + \underline{(x \cdot \oline{z} \cdot d \cdot x \cdot z )} + \underline{(x \cdot \oline{z} \cdot d \cdot \oline{x} \cdot \oline{z})} + \underline{(x \cdot \oline{z} \cdot d \cdot \oline{d} )}\\
+&\bigspace \underline{(y \cdot d \cdot \oline{y})} + (y \cdot d \cdot x \cdot z) + (y \cdot d \cdot \oline{x} \cdot \oline{z}) + \underline{(y \cdot d \cdot \oline{d})}]\\
+% line 21
+&\overset{A6}{=} [\underline{(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{y} )}  + \underline{(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{x}  \cdot \oline{z} )} + \underline{(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{d} )} + \underline{(x \cdot y \cdot x \cdot z )} + (x \cdot y \cdot \oline{d}) + \underline{(\oline{y} \cdot z \cdot \oline{d} \cdot \oline{y} )}  \\
+&\bigspace  + \underline{(\oline{y} \cdot z \cdot \oline{d} \cdot x \cdot z)} + \underline{(\oline{y} \cdot z \cdot \oline{d} \cdot \oline{d} )} + (x \cdot \oline{z} \cdot d \cdot \oline{y})+ (y \cdot d \cdot x \cdot z) + (y \cdot d \cdot \oline{x} \cdot \oline{z})]\\
+% line 21.5
+&\overset{T1}{=} [\bm{\underline{(\oline{x} \cdot \oline{y} \cdot \oline{d})}}  + \bm{\underline{(\oline{x} \cdot \oline{y} \cdot \oline{d} \cdot \oline{z} )}} + \bm{\underline{(\oline{x} \cdot \oline{y} \cdot \oline{d})}} + \bm{(x \cdot y \cdot z )} + (x \cdot y \cdot \oline{d}) + \bm{(\oline{y} \cdot z \cdot \oline{d})}  \\
+&\bigspace  + \bm{(\oline{y} \cdot \oline{d} \cdot x \cdot z)} + \bm{(\oline{y} \cdot z \cdot \oline{d} )} + (x \cdot \oline{z} \cdot d \cdot \oline{y})+ (y \cdot d \cdot x \cdot z) + (y \cdot d \cdot \oline{x} \cdot \oline{z})]\\
+% line 22
+&\overset{T4}{=} [\bm{(\oline{x} \cdot \oline{y} \cdot \oline{d})} + \underline{(x \cdot y \cdot z )} + (x \cdot y \cdot \oline{d}) + (\oline{y} \cdot z \cdot \oline{d}) + (\oline{y} \cdot \oline{d} \cdot x \cdot z) + (\oline{y} \cdot z \cdot \oline{d} ) \\
+&\bigspace  + (x \cdot \oline{z} \cdot d \cdot \oline{y})+ \underline{(x \cdot y \cdot z \cdot d)} + (y \cdot d \cdot \oline{x} \cdot \oline{z})] \\
+% line 23
+&\overset{T4}{=} [(\oline{x} \cdot \oline{y} \cdot \oline{d}) + \bm{(x \cdot y \cdot z )} + (x \cdot y \cdot \oline{d}) + (\oline{y} \cdot z \cdot \oline{d}) + (\oline{y} \cdot \oline{d} \cdot x \cdot z) + (\oline{y} \cdot z \cdot \oline{d} ) \\
+&\bigspace  + (x \cdot \oline{z} \cdot d \cdot \oline{y})+(y \cdot d \cdot \oline{x} \cdot \oline{z})] \\
+% line 24
+&\overset{T4}{=} [(\oline{x} \cdot \oline{y} \cdot \oline{d}) + (x \cdot y \cdot z ) + (x \cdot y \cdot \oline{d}) + \underline{(\oline{y} \cdot z \cdot \oline{d})} + \underline{(\oline{y} \cdot \oline{d} \cdot x \cdot z)} + \underline{(\oline{y} \cdot z \cdot \oline{d} )} \\
+&\bigspace  + (x \cdot \oline{z} \cdot d \cdot \oline{y})+(y \cdot d \cdot \oline{x} \cdot \oline{z})] \\
+% line 25
+&\overset{T4}{=}  [(\oline{x} \cdot \oline{y} \cdot \oline{d}) + (x \cdot y \cdot z ) + (x \cdot y \cdot \oline{d}) + \bm{(\oline{y} \cdot z \cdot \oline{d})} +(x \cdot \oline{z} \cdot d \cdot \oline{y})+(y \cdot d \cdot \oline{x} \cdot \oline{z})] \\
+% line 26
+&{=} \bm{[(\oline{x} \cdot \oline{y} \cdot \oline{d}) + (x \cdot y \cdot z ) + (x \cdot y \cdot \oline{d}) + (\oline{y} \cdot z \cdot \oline{d}) +(x \cdot \oline{y}  \cdot  \oline{z} \cdot d)+(\oline{x} \cdot y \cdot  \oline{z} \cdot d )] }\\
+&\scalebox{0.7}{Sono state omesse le operazioni che sfruttano l'assioma $A6$}\
+\end{align*}
+\newpage
+	\subsection*{Mappa di Karnaugh}
+	\begin{table}[!htb]
+		\vspace{-2em}
+		\begin{minipage}{.5\linewidth}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				\textbf{x} & \textbf{y} & \textbf{z} & \textbf{k} & \textbf{f(x,y,z,d)} \\
+				\hline
+				0 & 0 & 0 & 0 & 1 \\
+				\hline
+				0 & 0 & 1 & 0 & 1 \\
+				\hline
+				0 & 1 & 0 & 1 & 1 \\
+				\hline
+				1 & 0 & 0 & 1 & 1 \\
+				\hline
+				1 & 0 & 1 & 0 & 1 \\
+				\hline
+				1 & 1 & 0 & 0 & 1 \\
+				\hline
+				1 & 1 & 1 & 0 & 1 \\
+				\hline
+				1 & 1 & 1 & 1 & 1 \\
+				\hline
+			\end{tabular}
+		\end{minipage}
+		\begin{minipage}{.5\linewidth}
+			\centering			
+			\begin{karnaugh-map}*[4][4][1][][\phantom{z} \phantom{k}]
+				\manualterms{1,0,0,1,0,1,1,0,1,0,1,1,0,0,0,1}			
+				\implicantedge{0}{0}{8}{8}
+				\implicant{5}{5}
+				\implicant{6}{6}
+				\implicant{15}{11}
+				\implicantedge{3}{3}{11}{11}
+				\implicantedge{8}{8}{10}{10}
+			\end{karnaugh-map}
+		\end{minipage}
+	\end{table}
+	\tikz[overlay,remember picture] {
+		\draw[->] (8,5.5) -- (12,5.9);  \\prima
+		\draw[->] (10,3.5) -- (12,3.5); \\ quinto
+		\draw[->] (10,5.5) -- (12,5.4); \\seconda
+		\draw[->] (11,2.5) -- (12,2.5);
+		\draw[->] (9,4.7) -- (12,4.8); \\terza
+		\draw[->] (11,4.35) -- (12,4.3); \\quarta
+		\node[draw,circle,inner sep=1pt,fill] at (8,5.5) {};
+		\node[draw,circle,inner sep=1pt,fill] at (10,3.5) {};
+		\node[draw,circle,inner sep=1pt,fill] at (10,5.5) {};
+		\node[draw,circle,inner sep=1pt,fill] at (11,2.5) {};
+		\node[draw,circle,inner sep=1pt,fill] at (9,4.7) {};
+		\node[draw,circle,inner sep=1pt,fill] at (11,4.35) {};
+		\node at (13.75,5.95) {{\scriptsize $\oline{x}\oline{y}\oline{z}\oline{d}+\oline{x}\oline{y}z\oline{d}=(z+\oline{z})\oline{x}\oline{y}\oline{d}$}};
+		\node at (13.75,5.45) {\scriptsize $xy\oline{z}\oline{d}+xyz\oline{d}=(z+\oline{z})xy\oline{d}$};
+		\node at (12.45,4.85) {\scriptsize $\oline{x}y\oline{z}d$};
+		\node at (12.4,4.35) {\scriptsize $x\oline{y}\oline{z}d$};
+		\node at (13.75,3.53) {\scriptsize $xyzd+xyz\oline{d}=xyz(\oline{d}+d)$};
+		\node at (13.75,2.55) {\scriptsize $\oline{x}\oline{y}z\oline{d}+x\oline{y}z\oline{d}=(x+\oline{x})\oline{y}z\oline{d}$};
+		\draw[-] (7.18,6.04) -- (6.3,6.75);
+		\node at (7,6.5) {$xy$};
+		\node at (6.7,6.2) {$zd$};
+	}
+	\begin{textblock*}{10pt}(100pt,450pt)
+		\begin{align*}
+		\implies \bm{f(x,y,z,d)} = (\oline{x} \cdot \oline{y} \cdot \oline{d}) + (x \cdot y \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot y \cdot z) + (\oline{y} \cdot z \cdot \oline{d})
+		\end{align*}
+	\end{textblock*}
+\newpage
+\subsection*{Metodo tabellare di Quine - Mc Cluskey}
+\hspace*{-7em}
+\begin{table}[!htb]
+	\hspace{-8em}
+	\begin{minipage}[t]{0.3\textwidth}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			\textbf{x} & \textbf{y} & \textbf{z} & \textbf{d} & \textbf{f(x,y,z,d)} \\
+			\hline
+			0 & 0 & 0 & 0 & 1 \\
+			\hline
+			0 & 0 & 1 & 0 & 1 \\
+			\hline
+			0 & 1 & 0 & 1 & 1 \\
+			\hline
+			1 & 0 & 0 & 1 & 1 \\
+			\hline
+			1 & 0 & 1 & 0 & 1 \\
+			\hline
+			1 & 1 & 0 & 0 & 1 \\
+			\hline
+			1 & 1 & 1 & 0 & 1 \\
+			\hline
+			1 & 1 & 1 & 1 & 1 \\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\hspace{5.4em}
+	\begin{minipage}[t]{0.3\textwidth}
+		\def\arraystretch{1.2}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\phantom{\checkmark} & \textbf{Livello} & & \phantom{a}$\bm{xyzd}$\phantom{a} \\
+			\hline
+			& 0 & 0 & 0000 \\
+			\hline
+			& 1 & 2 & 0010 \\
+			\hline
+			A & 2 & 5 & 0101 \\
+			B && 9 & 1001 \\
+			& & 10 & 1010 \\
+			& & 12 & 1100 \\
+			\hline
+			& 3 & 14 & 1110 \\
+			\hline
+			& 4 & 15 & 1111 \\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\hspace{7em}
+	\begin{minipage}[t]{0.3\textwidth}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\quad\quad\quad & \quad\quad\quad\quad & \quad$\bm{xyzd}$\quad\quad \\
+			\hline
+			C & 0,2 & 00-0 \\
+			D & 2,10 & -010 \\
+			\hline
+			E & 10,14 & 1-10 \\
+			\hline
+			F & 12,14 & 11-0 \\
+			G & 14,15 & 111- \\
+			\hline
+		\end{tabular}
+	\end{minipage}
+	\tikz[overlay,remember picture] {
+		\node (c) at (15,3.9) {\scriptsize $\oline{x}\oline{y}\oline{d}(z+\oline{z})$};
+		\node (d) at (15,3.4) {\scriptsize $(x+\oline{x})\oline{y}z\oline{d}$};
+		\node (e) at (15,2.9) {\scriptsize $xz\oline{d}(y+\oline{y})$};
+		\node (f) at (15,2.45) {\scriptsize $xy\oline{d}(z+\oline{z})$};
+		\node (g) at (15,2) {\scriptsize $xyz(d+\oline{d})$};
+		\draw[dashed,->] (13.3,3.05) to (c.west);
+		\draw[dashed,->] (13.3,2.65) to (d.west);
+		\draw[dashed,->] (13.3,2.25) to (e.west);
+		\draw[dashed,->] (13.3,1.8) to (f.west);
+		\draw[dashed,->] (13.3,1.4) to (g.west);
+		%\draw[dashed,->] (5.55,3.65) -- (7.2,3);
+		%\draw[dashed,->] (5.7,3.4) -- (7.2,2.6);
+		%\draw[dashed,->] (5.73,2.95) -- (7.2,2.2);
+		%\draw[dashed,->] (5.6,2.05) -- (7.2,1.75);
+		%\draw[dashed,->] (6,1.4) -- (7.2,1.3);
+		%\node[draw,circle,inner sep=0.5pt,fill] at (5.55,3.65) {};
+		%\node[draw,circle,inner sep=0.5pt,fill] at (5.65,3.4) {};
+		%\node[draw,circle,inner sep=0.5pt,fill] at (5.68,2.95) {};
+		%\node[draw,circle,inner sep=0.5pt,fill] at (5.6,2.05) {};
+		%\node[draw,circle,inner sep=0.5pt,fill] at (6,1.4) {};
+	}
+\end{table}
+\hspace*{6em}
+\bigskip
+% reticolo
+\begin{table}[!htb]
+	\begin{minipage}{.5\linewidth}
+		\hspace{-2em}
+		\begin{tikzpicture}
+		\node (n0) at (0,0) {0} ;
+		\node (n1) at ($(n0)+(0.5,0)$) {2} ;
+		\node (n2) at ($(n1)+(0.5,0)$) {5} ;
+		\node (n3) at ($(n2)+(0.5,0)$) {9} ;
+		\node (n4) at ($(n3)+(0.5,0)$) {10} ;
+		\node (n5) at ($(n4)+(0.5,0)$) {12};
+		\node (n6) at ($(n5)+(0.5,0)$) {14};
+		\node (n7) at ($(n6)+(0.5,0)$) {15};
+		\node (m0) at ($(n0)+(-1,1)$) {A};
+		\node (m1) at ($(m0)+ (0,0.5)$) {B};
+		\node (m2) at ($(m1)+ (0,0.5)$) {C};
+		\node (m3) at ($(m2)+ (0,0.5)$) {D};
+		\node (m4) at ($(m3)+ (0,0.5)$) {E};
+		\node (m5) at ($(m4)+ (0,0.5)$) {F};
+		\node (m6) at ($(m5)+ (0,0.5)$) {G};
+		\foreach \i in {0,1,2,3,4,5,6,7}
+		{
+			\draw (n\i) -- (0.5*\i,4+0.3);
+		}
+		\foreach \i in {0,1,2,3,4,5,6}
+		{
+			\draw (m\i) -- (3.5 + 0.3,\i*0.5+1);
+		}
+		% A
+		\draw (1.0,1) circle (.1cm);
+		% B
+		\draw (1.5,1.5) circle (.1cm);
+		% C
+		\draw (0,2) circle (.1cm);
+		\draw (0.5,2) circle (.1cm);
+		% D
+		\draw (0.5,2.5) circle (.1cm);
+		\draw (2,2.5) circle (.1cm);
+		% E
+		\draw (2,3) circle (.1cm);
+		\draw (3,3) circle (.1cm);
+		% F
+		\draw (2.5,3.5) circle (.1cm);
+		\draw (3,3.5) circle (.1cm);
+		% G
+		\draw (3,4) circle (.1cm);
+		\draw (3.5,4) circle (.1cm);
+		\end{tikzpicture}
+	\end{minipage}
+	\begin{minipage}{.5\linewidth}
+		\hspace{1em}
+		\makegapedcells
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\textbf{Implicante} & \textbf{Implicati} & \textbf{Espressione} \\
+			\hline
+			A & 5 & $\oline{x} \cdot y \cdot \oline{z} \cdot d$ \\
+			\hline
+			B & 9 & $x \cdot \oline{y} \cdot \oline{z} \cdot d$ \\
+			\hline
+			C & 0,2 & $\oline{x} \cdot \oline{y} \cdot \oline{d}$ \\
+			\hline
+			D & 2,10 & $\oline{y} \cdot z \cdot \oline{d}$ \\
+			\hline
+			F & 12,14 & $x \cdot y \cdot \oline{d}$ \\
+			\hline
+			G &14,15 & $x \cdot y \cdot z$ \\
+			\hline
+		\end{tabular}
+		\centering
+		\bigskip
+		\textit{\small{Implicanti primi necessari}}
+	\end{minipage}
+\end{table}
+
+Per coprire il termine $10$ è possibile scegliere l'implicante D oppure l'implicante E. Scegliendo l'implicante D l'espressione risultante è identica a quella trovata con il metodo della mappa di Karnaugh.
+La funzione ottenuta è la seguente:
+
+\begin{align*}
+\bm{f(x,y,z,d)} = \underbracket{(\oline{x} \cdot y \cdot \oline{z} \cdot d)}_{\text{A}} + \underbracket{(x \cdot \oline{y} \cdot \oline{z} \cdot d)}_{\text{B}} + \underbracket{(\oline{x} \cdot \oline{y} \cdot \oline{d})}_{\text{C}} + \underbracket{(\oline{y} \cdot z \cdot \oline{d})}_{\text{D}} + \underbracket{(x \cdot y \cdot \oline{d})}_{\text{F}} + \underbracket{(x \cdot y \cdot z)}_{\text{G}}
+\end{align*}
+\newpage       
+\section{Schema logico}
+\bigskip
+\subsection*{Minterm:}
+\begin{align*}
+\bm{f(x,y,z,k)} &= (\oline{x} \cdot \oline{y} \cdot \oline{z} \cdot \oline{d}) + (\oline{x} \cdot \oline{y} \cdot z \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot z \cdot \oline{d}) + (x \cdot y \cdot \oline{z} \cdot \oline{d}) + \\
+&\bigspace + (x \cdot y \cdot z \cdot \oline{d}) + (x \cdot y \cdot z \cdot d)
+\end{align*}
+% labels
+\begin{textblock*}{10pt}(368pt,335pt)
+	\scalebox{0.5}{$(\oline{x} \cdot \oline{y} \cdot \oline{z} \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,378pt)
+	\scalebox{0.5}{$(\oline{x} \cdot \oline{y} \cdot z \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,421pt)
+	\scalebox{0.5}{$(\oline{x} \cdot y \cdot \oline{z} \cdot d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,463pt)
+	\scalebox{0.5}{$(x \cdot \oline{y} \cdot \oline{z} \cdot d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,506pt)
+	\scalebox{0.5}{$(x \cdot \oline{y} \cdot z \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,548pt)
+	\scalebox{0.5}{$(x \cdot y \cdot \oline{z} \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,591pt)
+	\scalebox{0.5}{$(x \cdot y \cdot z \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(368pt,635pt)
+	\scalebox{0.5}{$(x \cdot y \cdot z \cdot d)$}
+\end{textblock*}
+% function label
+\begin{textblock*}{10pt}(504pt,455pt)
+	\scalebox{0.8}{\boldmath{$f(x,y,z,d)$}}
+\end{textblock*}
+% variabili negate
+\begin{textblock*}{10pt}(163pt,278pt)
+	\scalebox{0.9}{$\oline{x}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(220pt,278pt)
+	\scalebox{0.9}{$\oline{y}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(280pt,278pt)
+	\scalebox{0.9}{$\oline{z}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(335pt,278pt)
+	\scalebox{0.9}{$\oline{d}$}
+\end{textblock*}
+\begin{center}
+	%minterm
+	\begin{tikzpicture}
+	\node (x0) at (0,0) {$x$};
+	\node (x1) at ($(x0)+(2,0)$) {$y$};
+	\node (x2) at ($(x1)+( 2,0)$) {$z$};
+	\node (x3) at ($(x2)+(2,0)$) {$d$};
+	\node[not gate US, draw, rotate=-90] at ($(x0)+(,-1.5)$) (Not0) {};
+	\node[not gate US, draw, rotate=-90] at ($(x1)+(1,-1.5)$) (Not1) {};
+	\node[not gate US, draw, rotate=-90] at ($(x2)+(1,-1.5)$) (Not2) {};
+	\node[not gate US, draw, rotate=-90] at ($(x3)+(1,-1.5)$) (Not3) {};
+	% connections with not ports
+	\foreach \i in {0,1,2,3}
+	{
+		\path (x\i) -- coordinate (punt\i) (x\i -| Not\i.input);
+		\draw (punt\i) node[branch] {} -| (Not\i.input);
+	}
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(x3)+(3,-3.5)$) (And0) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And0)+(0,-1.5)$) (And1) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And1)+(0,-1.5)$) (And2) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And2)+(0,-1.5)$) (And3) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And3)+(0,-1.5)$) (And4) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And4)+(0,-1.5)$) (And5) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And5)+(0,-1.5)$) (And6) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And6)+(0,-1.5)$) (And7) {};
+	\node[or gate US, draw, logic gate inputs=nnnnnnnn] at ($(And3)+(5,-0.75)$) (Or0) {};
+	% minterm connections
+	% 0
+	\draw (Not0 |- And0.input 1) node[branch] {} -- (And0.input 1);
+	\draw (Not1 |- And0.input 2) node[branch] {} -- (And0.input 2);
+	\draw (Not2 |- And0.input 3) node[branch] {} -- (And0.input 3);
+	\draw (Not3 |- And0.input 4) node[branch] {} -- (And0.input 4);
+	% 1
+	\draw (Not0 |- And1.input 1) node[branch] {} -- (And1.input 1);
+	\draw (Not1 |- And1.input 2) node[branch] {} -- (And1.input 2);
+	\draw (x2 |- And1.input 3) node[branch] {} -- (And1.input 3);
+	\draw (Not3 |- And1.input 4) node[branch] {} -- (And1.input 4);
+	% 2
+	\draw (Not0 |- And2.input 1) node[branch] {} -- (And2.input 1);
+	\draw (x1 |- And2.input 2) node[branch] {} -- (And2.input 2);
+	\draw (Not2 |- And2.input 3) node[branch] {} -- (And2.input 3);
+	\draw (x3 |- And2.input 4) node[branch] {} -- (And2.input 4);
+	\draw (Not0) |- (And2.input 1);
+	% 3
+	\draw (x0 |- And3.input 1) node[branch] {} -- (And3.input 1);
+	\draw (Not1 |- And3.input 2) node[branch] {} -- (And3.input 2);
+	\draw (Not2 |- And3.input 3) node[branch] {} -- (And3.input 3);
+	\draw (x3 |- And3.input 4) node[branch] {} -- (And3.input 4);
+	% 4
+	\draw (x0 |- And4.input 1) node[branch] {} -- (And4.input 1);
+	\draw (Not1 |- And4.input 2) node[branch] {} -- (And4.input 2);
+	\draw (x2 |- And4.input 3) node[branch] {} -- (And4.input 3);
+	\draw (Not3 |- And4.input 4) node[branch] {} -- (And4.input 4);
+	\draw (Not1) |- (And4.input 2);
+	% 5
+	\draw (x0 |- And5.input 1) node[branch] {} -- (And5.input 1);
+	\draw (x1 |- And5.input 2) node[branch] {} -- (And5.input 2);
+	\draw (Not2 |- And5.input 3) node[branch] {} -- (And5.input 3);
+	\draw (Not3 |- And5.input 4) node[branch] {} -- (And5.input 4);
+	\draw (Not2) |- (And5.input 3);
+	% 6
+	\draw (x0 |- And6.input 1) node[branch] {} -- (And6.input 1);
+	\draw (x1 |- And6.input 2) node[branch] {} -- (And6.input 2);
+	\draw (x2 |- And6.input 3) node[branch] {} -- (And6.input 3);
+	\draw (Not3 |- And6.input 4) node[branch] {} -- (And6.input 4);
+	\draw (Not3) |- (And6.input 4);
+	% 7
+	\draw (x0 |- And7.input 1) node[branch] {} -- (And7.input 1);
+	\draw (x1 |- And7.input 2) node[branch] {} -- (And7.input 2);
+	\draw (x2 |- And7.input 3) node[branch] {} -- (And7.input 3);
+	\draw (x3 |- And7.input 4) node[branch] {} -- (And7.input 4);
+	\draw (x0) |- (And7.input 1);
+	\draw (x1) |- (And7.input 2);
+	\draw (x2) |- (And7.input 3);
+	\draw (x3) |- (And7.input 4);
+	% AND to OR connection
+	% 0
+	\coordinate (p) at ($(And0.output)+(1,0)$);
+	\draw (p) |- (Or0.input 1);
+	\draw (And0.output) -- (p);
+	%1
+	\coordinate (p) at ($(And1.output)+(0.75,0)$);
+	\draw (p) |- (Or0.input 2);
+	\draw (And1.output) -- (p);
+	%2
+	\coordinate (p) at ($(And2.output)+(0.50,0)$);
+	\draw (p) |- (Or0.input 3);
+	\draw (And2.output) -- (p);
+	%3
+	\coordinate (p) at ($(And3.output)+(0.25,0)$);
+	\draw (p) |- (Or0.input 4);
+	\draw (And3.output) -- (p);
+	%4
+	\coordinate (p) at ($(And4.output)+(0.25,0)$);
+	\draw (p) |- (Or0.input 5);
+	\draw (And4.output) -- (p);
+	%5
+	\coordinate (p) at ($(And5.output)+(0.50,0)$);
+	\draw (p) |- (Or0.input 6);
+	\draw (And5.output) -- (p);
+	%6
+	\coordinate (p) at ($(And6.output)+(0.75,0)$);
+	\draw (p) |- (Or0.input 7);
+	\draw (And6.output) -- (p);
+	%7
+	\coordinate (p) at ($(And7.output)+(1,0)$);
+	\draw (p) |- (Or0.input 8);
+	\draw (And7.output) -- (p);
+	\end{tikzpicture}
+\end{center}
+\newpage
+\bigskip
+\subsection*{Maxterm:}
+\begin{align*}
+% line 1
+\bm{f(x,y,z,d)} &= (x+y+z+\oline{d}) \cdot (x+y+\oline{z}+\oline{d}) \cdot (x+\oline{y}+z+d) \cdot (x+\oline{y}+\oline{z}+d) \cdot (x+\oline{y}+\oline{z}+\oline{k}) \cdot\\
+&\bigspace\cdot (\oline{x}+y+z+d) \cdot (\oline{x}+y+\oline{z}+\oline{d}) \cdot (\oline{x}+\oline{y}+z+\oline{d})
+\end{align*}
+% labels 
+\begin{textblock*}{10pt}(366pt,295pt)
+	\scalebox{0.5}{$(x+y+z+\oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,340pt)
+	\scalebox{0.5}{$(x + y + \oline{z} + \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,385pt)
+	\scalebox{0.5}{$(x + \oline{y} + z + d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,428pt)
+	\scalebox{0.5}{$(x+\oline{y}+\oline{z}+d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,470pt)
+	\scalebox{0.5}{$(x+\oline{y}+\oline{z}+\oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,512pt)
+	\scalebox{0.5}{$(\oline{x}+y+z+d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,555pt)
+	\scalebox{0.5}{$(\oline{x}+y+\oline{z}+\oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(366pt,598pt)
+	\scalebox{0.5}{$(\oline{x}+\oline{y}+z+\oline{d})$}
+\end{textblock*}
+% function label
+\begin{textblock*}{10pt}(500pt,418pt)
+	\scalebox{0.8}{\boldmath{$f(x,y,z,d)$}}
+\end{textblock*}
+% variabili negate
+\begin{textblock*}{10pt}(163pt,243pt)
+	\scalebox{0.9}{$\oline{x}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(220pt,243pt)
+	\scalebox{0.9}{$\oline{y}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(280pt,243pt)
+	\scalebox{0.9}{$\oline{z}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(335pt,243pt)
+	\scalebox{0.9}{$\oline{d}$}
+\end{textblock*}
+\begin{center}
+	\begin{tikzpicture}
+	\node (x0) at (0,0) {$x$};
+	\node (x1) at ($(x0)+(2,0)$) {$y$};
+	\node (x2) at ($(x1)+(2,0)$) {$z$};
+	\node (x3) at ($(x2)+(2,0)$) {$d$};
+	\node[not gate US, draw, rotate=-90] at ($(x0)+(1,-1.5)$) (Not0) {};
+	\node[not gate US, draw, rotate=-90] at ($(x1)+(1,-1.5)$) (Not1) {};
+	\node[not gate US, draw, rotate=-90] at ($(x2)+(1,-1.5)$) (Not2) {};
+	\node[not gate US, draw, rotate=-90] at ($(x3)+(1,-1.5)$) (Not3) {};
+	% links with not ports
+	\foreach \i in {0,1,2,3}
+	{
+		\path (x\i) -- coordinate (punt\i) (x\i -| Not\i.input);
+		\draw (punt\i) node[branch] {} -| (Not\i.input);
+	}
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(x3)+(3,-3.5)$) (Or0) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And0)+(0,-1.5)$) (Or1) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And1)+(0,-1.5)$) (Or2) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And2)+(0,-1.5)$) (Or3) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And3)+(0,-1.5)$) (Or4) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And4)+(0,-1.5)$) (Or5) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And5)+(0,-1.5)$) (Or6) {};
+	\node[or gate US, draw, logic gate inputs=nnnn] at ($(And6)+(0,-1.5)$) (Or7) {};
+	\node[and gate US, draw, logic gate inputs=nnnnnnnn] at ($(Or3)+(5,-0.75)$) (And0) {};
+	% maxterm connections
+	% 0
+	\draw (x0 |- Or0.input 1) node[branch] {} -- (Or0.input 1);
+	\draw (x1 |- Or0.input 2) node[branch] {} -- (Or0.input 2);
+	\draw (x2 |- Or0.input 3) node[branch] {} -- (Or0.input 3);
+	\draw (Not3 |- Or0.input 4) node[branch] {} -- (Or0.input 4);
+	% 1
+	\draw (x0 |- Or1.input 1) node[branch] {} -- (Or1.input 1);
+	\draw (x1 |- Or1.input 2) node[branch] {} -- (Or1.input 2);
+	\draw (Not2 |- Or1.input 3) node[branch] {} -- (Or1.input 3);
+	\draw (Not3 |- Or1.input 4) node[branch] {} -- (Or1.input 4);
+	% 2
+	\draw (x0 |- Or2.input 1) node[branch] {} -- (Or2.input 1);
+	\draw (Not1 |- Or2.input 2) node[branch] {} -- (Or2.input 2);
+	\draw (x2 |- Or2.input 3) node[branch] {} -- (Or2.input 3);
+	\draw (x3 |- Or2.input 4) node[branch] {} -- (Or2.input 4);
+	% 3
+	\draw (x0 |- Or3.input 1) node[branch] {} -- (Or3.input 1);
+	\draw (Not1 |- Or3.input 2) node[branch] {} -- (Or3.input 2);
+	\draw (Not2 |- Or3.input 3) node[branch] {} -- (Or3.input 3);
+	\draw (x3 |- Or3.input 4) node[branch] {} -- (Or3.input 4);
+	% 4
+	\draw (x0 |- Or4.input 1) node[branch] {} -- (Or4.input 1);
+	\draw (Not1 |- Or4.input 2) node[branch] {} -- (Or4.input 2);
+	\draw (Not2 |- Or4.input 3) node[branch] {} -- (Or4.input 3);
+	\draw (Not3 |- Or4.input 4) node[branch] {} -- (Or4.input 4);
+	\draw (x0) |- (Or4.input 1);
+	% 5
+	\draw (Not0 |- Or5.input 1) node[branch] {} -- (Or5.input 1);
+	\draw (x1 |- Or5.input 2) node[branch] {} -- (Or5.input 2);
+	\draw (x2 |- Or5.input 3) node[branch] {} -- (Or5.input 3);
+	\draw (x3 |- Or5.input 4) node[branch] {} -- (Or5.input 4);
+	\draw (x3) |- (Or5.input 4);
+	% 6
+	\draw (Not0 |- Or6.input 1) node[branch] {} -- (Or6.input 1);
+	\draw (x1 |- Or6.input 2) node[branch] {} -- (Or6.input 2);
+	\draw (Not2 |- Or6.input 3) node[branch] {} -- (Or6.input 3);
+	\draw (Not3 |- Or6.input 4) node[branch] {} -- (Or6.input 4);
+	\draw (x1) |- (Or6.input 2);
+	\draw (Not2) |- (Or6.input 3);
+	% 7
+	\draw (Not0 |- Or7.input 1) node[branch] {} -- (Or7.input 1);
+	\draw (Not1 |- Or7.input 2) node[branch] {} -- (Or7.input 2);
+	\draw (x2 |- Or7.input 3) node[branch] {} -- (Or7.input 3);
+	\draw (Not3 |- Or7.input 4) node[branch] {} -- (Or7.input 4);
+	\draw (Not0) |- (Or7.input 1);
+	\draw (Not1) |- (Or7.input 2);
+	\draw (Not3) |- (Or7.input 4);
+	\draw (x2) |- (Or7.input 3);
+	% OR to AND connection
+	% 0
+	\coordinate (p) at ($(Or0.output)+(1,0)$);
+	\draw (p) |- (And0.input 1);
+	\draw (Or0.output) -- (p);
+	%1
+	\coordinate (p) at ($(Or1.output)+(0.75,0)$);
+	\draw (p) |- (And0.input 2);
+	\draw (Or1.output) -- (p);
+	%2
+	\coordinate (p) at ($(Or2.output)+(0.50,0)$);
+	\draw (p) |- (And0.input 3);
+	\draw (Or2.output) -- (p);
+	%3
+	\coordinate (p) at ($(Or3.output)+(0.25,0)$);
+	\draw (p) |- (And0.input 4);
+	\draw (Or3.output) -- (p);
+	%4
+	\coordinate (p) at ($(Or4.output)+(0.25,0)$);
+	\draw (p) |- (And0.input 5);
+	\draw (Or4.output) -- (p);
+	%5
+	\coordinate (p) at ($(Or5.output)+(0.50,0)$);
+	\draw (p) |- (And0.input 6);
+	\draw (Or5.output) -- (p);
+	%6
+	\coordinate (p) at ($(Or6.output)+(0.75,0)$);
+	\draw (p) |- (And0.input 7);
+	\draw (Or6.output) -- (p);
+	%7
+	\coordinate (p) at ($(Or7.output)+(1,0)$);
+	\draw (p) |- (And0.input 8);
+	\draw (Or7.output) -- (p);
+	\end{tikzpicture}
+\end{center}
+\newpage
+\bigskip
+\subsection*{Funzione semplificata:}
+\begin{align*}
+\bm{f(x,y,z,d)} = (\oline{x} \cdot \oline{y} \cdot \oline{d}) + (x \cdot y \cdot \oline{d}) + (\oline{x} \cdot y \cdot \oline{z} \cdot d) + (x \cdot \oline{y} \cdot \oline{z} \cdot d) + (x \cdot y \cdot z) + (\oline{y} \cdot z \cdot \oline{d})
+\end{align*}
+\bigskip
+\bigskip
+\bigskip
+% labels
+\begin{textblock*}{10pt}(370pt,320pt)
+	\scalebox{0.5}{$(\oline{x} \cdot \oline{y} \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(370pt,362pt)
+	\scalebox{0.5}{$(x \cdot y \cdot \oline{d})$}
+\end{textblock*}
+\begin{textblock*}{10pt}(367pt,403pt)
+	\scalebox{0.5}{$(\oline{x} \cdot y \cdot \oline{z} \cdot d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(367pt,445pt)
+	\scalebox{0.5}{$ (x \cdot \oline{y} \cdot \oline{z} \cdot d)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(370pt,491pt)
+	\scalebox{0.5}{$(x \cdot y \cdot z)$}
+\end{textblock*}
+\begin{textblock*}{10pt}(370pt,533pt)
+	\scalebox{0.5}{$(\oline{y} \cdot z \cdot \oline{d})$}
+\end{textblock*}
+% function label
+\begin{textblock*}{10pt}(502pt,409pt)
+	\scalebox{0.8}{\boldmath{$f(x,y,z,d)$}}
+\end{textblock*}
+% variabili negate
+\begin{textblock*}{10pt}(163pt,271pt)
+	\scalebox{0.9}{$\oline{x}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(220pt,271pt)
+	\scalebox{0.9}{$\oline{y}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(280pt,271pt)
+	\scalebox{0.9}{$\oline{z}$}
+\end{textblock*}
+\begin{textblock*}{10pt}(335pt,271pt)
+	\scalebox{0.9}{$\oline{d}$}
+\end{textblock*}
+\begin{center}
+	\begin{tikzpicture}
+	\node (x0) at (0,0) {$x$};
+	\node (x1) at ($(x0)+(2,0)$) {$y$};
+	\node (x2) at ($(x1)+(2,0)$) {$z$};
+	\node (x3) at ($(x2)+(2,0)$) {$d$};
+	\node[not gate US, draw, rotate=-90] at ($(x0)+(1,-1.5)$) (Not0) {};
+	\node[not gate US, draw, rotate=-90] at ($(x1)+(1,-1.5)$) (Not1) {};
+	\node[not gate US, draw, rotate=-90] at ($(x2)+(1,-1.5)$) (Not2) {};
+	\node[not gate US, draw, rotate=-90] at ($(x3)+(1,-1.5)$) (Not3) {};
+	% connections with not ports
+	\foreach \i in {0,1,2,3}
+	{
+		\path (x\i) -- coordinate (punt\i) (x\i -| Not\i.input);
+		\draw (punt\i) node[branch] {} -| (Not\i.input);
+	}
+	\node[and gate US, draw, logic gate inputs=nnn] at ($(x3)+(3,-3.5)$) (And0) {};
+	\node[and gate US, draw, logic gate inputs=nnn] at ($(And0)+(0,-1.5)$) (And1) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And1)+(0,-1.5)$) (And2) {};
+	\node[and gate US, draw, logic gate inputs=nnnn] at ($(And2)+(0,-1.5)$) (And3) {};
+	\node[and gate US, draw, logic gate inputs=nnn] at ($(And3)+(0,-1.5)$) (And4) {};
+	\node[and gate US, draw, logic gate inputs=nnn] at ($(And4)+(0,-1.5)$) (And5) {};
+	\node[or gate US, draw, logic gate inputs=nnnnnn] at ($(And3)+(5,0.75)$) (Or0) {};
+	% connections
+	% 0
+	\draw (Not0 |- And0.input 1) node[branch] {} -- (And0.input 1);
+	\draw (Not1 |- And0.input 2) node[branch] {} -- (And0.input 2);
+	\draw (Not3 |- And0.input 3) node[branch] {} -- (And0.input 3);
+	% 1
+	\draw (x0 |- And1.input 1) node[branch] {} -- (And1.input 1);
+	\draw (x1 |- And1.input 2) node[branch] {} -- (And1.input 2);
+	\draw (Not3 |- And1.input 3) node[branch] {} -- (And1.input 3);
+	% 2
+	\draw (Not0 |- And2.input 1) node[branch] {} -- (And2.input 1);
+	\draw (x1 |- And2.input 2) node[branch] {} -- (And2.input 2);
+	\draw (Not2 |- And2.input 3) node[branch] {} -- (And2.input 3);
+	\draw (x3 |- And2.input 4) node[branch] {} -- (And2.input 4);
+	\draw (Not0) |- (And2.input 1);
+	% 3
+	\draw (x0 |- And3.input 1) node[branch] {} -- (And3.input 1);
+	\draw (Not1 |- And3.input 2) node[branch] {} -- (And3.input 2);
+	\draw (Not2 |- And3.input 3) node[branch] {} -- (And3.input 3);
+	\draw (x3 |- And3.input 4) node[branch] {} -- (And3.input 4);
+	\draw (Not2) |- (And3.input 3);
+	\draw (x3) |- (And3.input 4);
+	% 4
+	\draw (x0 |- And4.input 1) node[branch] {} -- (And4.input 1);
+	\draw (x1 |- And4.input 2) node[branch] {} -- (And4.input 2);
+	\draw (x2 |- And4.input 3) node[branch] {} -- (And4.input 3);
+	\draw (x0) |- (And4.input 1);
+	\draw (x1) |- (And4.input 2);
+	% 5
+	\draw (Not1 |- And5.input 1) node[branch] {} -- (And5.input 1);
+	\draw (x2 |- And5.input 2) node[branch] {} -- (And5.input 2);
+	\draw (Not3 |- And5.input 3) node[branch] {} -- (And5.input 3);
+	\draw (x2) |- (And5.input 2);
+	\draw (Not3) |- (And5.input 3);
+	\draw (Not1) |- (And5.input 1);
+	% AND to OR connection
+	% 0
+	\coordinate (p) at ($(And0.output)+(0.9,0)$);
+	\draw (p) |- (Or0.input 1);
+	\draw (And0.output) -- (p);
+	%1
+	\coordinate (p) at ($(And1.output)+(0.65,0)$);
+	\draw (p) |- (Or0.input 2);
+	\draw (And1.output) -- (p);
+	%2
+	\coordinate (p) at ($(And2.output)+(0.50,0)$);
+	\draw (p) |- (Or0.input 3);
+	\draw (And2.output) -- (p);
+	%3
+	\coordinate (p) at ($(And3.output)+(0.50,0)$);
+	\draw (p) |- (Or0.input 4);
+	\draw (And3.output) -- (p);
+	%4
+	\coordinate (p) at ($(And4.output)+(0.75,0)$);
+	\draw (p) |- (Or0.input 5);
+	\draw (And4.output) -- (p);
+	%5
+	\coordinate (p) at ($(And5.output)+(1,0)$);
+	\draw (p) |- (Or0.input 6);
+	\draw (And5.output) -- (p);
+	\end{tikzpicture}
+\end{center}
+\bigspace
+\section{Dichiarazione}
+Il lavoro di cui sopra è stato svolto da me in completa autonomia.\\\\
+\hspace*{\fill} Fabio Paolini\\
+\hspace*{\fill} Trieste, \today
+\end{document}
